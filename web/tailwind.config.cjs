@@ -2,7 +2,9 @@
 module.exports = {
   content: [
     './src/**/*.tsx',
-    './index.html'
+    './index.html',
+    './src/components'
+    
   ],
   theme: {
     fontFamily: {
