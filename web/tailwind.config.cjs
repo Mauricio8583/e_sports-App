@@ -3,7 +3,8 @@ module.exports = {
   content: [
     './src/**/*.tsx',
     './index.html',
-    './src/components'
+    './src/components',
+    './src/pages'
     
   ],
   theme: {

@@ -4,11 +4,13 @@ import cors from 'cors'
 import { PrismaClient } from '@prisma/client'
 import {convertHourToMinutes} from './utils/convert-hour-to-minutes'
 import {convertMinutesToHour} from './utils/convert-minutes-to-hour'
+import * as Crypto from 'crypto-js'
 
 
 const app = express();
 dotenv.config();                  // Basic config section
 const port = process.env.PORT;
+const key = process.env.KEY?.toString();
 const prisma = new PrismaClient({
     log: ['query']
 });
@@ -87,13 +89,15 @@ app.get("/ads/:id/discord", async (req, res) => {
 
 })
 
-app.post("/games/:id/ads", async(req, res) => {
+app.post("/games/:id/ads/:user", async(req, res) => {
 
     const gameID = req.params.id;
+    const userID = req.params.user
     const body = req.body;
     const ad = await prisma.ad.create({
         data: {
             gameId: gameID,
+            userId: userID,
             name: body.name,
             yearsPlaying: body.yearsPlaying,
             discord: body.discord,
@@ -107,6 +111,23 @@ app.post("/games/:id/ads", async(req, res) => {
 
 
     return res.status(201).json(ad)
+})
+
+app.post("/register", async (req, res) => {
+    const body = req.body;
+
+    const hash = Crypto.AES.encrypt(body.password, key ? key : '').toString();
+
+    const user = await prisma.user.create({
+        data: {
+            username: body.username,
+            password: hash,
+            email: body.email
+
+        }
+    })
+
+    return res.status(201).json(user)
 })
 
 app.listen(port, () => {

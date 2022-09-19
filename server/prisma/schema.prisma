@@ -15,6 +15,16 @@ model Game{
   ads Ad[]
 }
 
+model User{
+  id String @id @default(uuid())
+  username String
+  password String
+  email String
+
+  ads Ad[]
+
+}
+
 model Ad{
   id String @id @default(uuid())
   name String
@@ -25,9 +35,11 @@ model Ad{
   hourEnd Int
   useVoiceChannel Boolean
   gameId String
+  userId String
   createdAt DateTime @default(now())
 
   game Game @relation(fields: [gameId], references: [id])
+  user User @relation(fields: [userId], references: [id])
   
 }
 
