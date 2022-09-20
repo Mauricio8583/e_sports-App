@@ -6,6 +6,9 @@ import * as Checkbox from '@radix-ui/react-checkbox'
 import * as Select from '@radix-ui/react-select'
 import * as ToggleGroup from '@radix-ui/react-toggle-group'
 import axios from 'axios'
+import {useSelector} from 'react-redux'
+import { RootStateOrAny } from 'react-redux'
+
 
 
 interface GameProps{
@@ -18,8 +21,8 @@ export const CreateAdModal = () => {
   const [games, setGames] = useState<GameProps[]>([]);
   const [weekDays, setWeekDays] = useState<string[]>([]);
   const [useVoiceChannel, setUseVoiceChannel] = useState(false);
+  const currentUser = useSelector<RootStateOrAny, object>((state) => state.user.currentUser)
 
-  
   const handleCreateAd = async (e: FormEvent) => {
     e.preventDefault()
     
@@ -31,7 +34,7 @@ export const CreateAdModal = () => {
     }
 
     try{
-      await axios.post(`http://localhost:3000/games/${data.game}/ads`, {
+      await axios.post(`http://localhost:3000/games/${data.game}/ads/${currentUser.id}`, {
       name: data.name,
       yearsPlaying: Number(data.yearsPlaying),
       discord: data.discord,

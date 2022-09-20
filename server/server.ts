@@ -130,6 +130,38 @@ app.post("/register", async (req, res) => {
     return res.status(201).json(user)
 })
 
+app.post("/login", async (req, res) => {
+    
+    const username = req.body.username;
+    const password = req.body.password;
+
+    const login = await prisma.user.findFirstOrThrow({
+        select: {
+            id: true,
+            username: true,
+            password: true,
+            email: true
+        },
+        where: {
+            username: username
+        }
+    })
+
+  if(!login){
+    res.status(401).json("User ou senha estao incorretos")
+  }  
+  const hashedPassword = Crypto.AES.decrypt(login.password, key ? key: '');
+  const dc_password = hashedPassword.toString(Crypto.enc.Utf8);
+
+  if(dc_password != password){
+    res.status(401).json("User ou senha estao incorretos")
+  }
+  else {
+    res.status(200).json(login)
+  }
+    
+})
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
