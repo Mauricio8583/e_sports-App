@@ -10,7 +10,6 @@ import {useSelector} from 'react-redux'
 import { RootStateOrAny } from 'react-redux'
 
 
-
 interface GameProps{
   id: string,
   title: string  
@@ -29,7 +28,7 @@ export const CreateAdModal = () => {
     const formData = new FormData(e.target as HTMLFormElement);
     const data = Object.fromEntries(formData);
 
-    if(!data.name){
+    if(!data.name || !data.yearsPlaying || !data.discord || !data.hourStart || !data.hourEnd){
       alert("Nao deixe nenhum campo em branco")
     }
 
@@ -45,8 +44,8 @@ export const CreateAdModal = () => {
 
     })    
      alert("Anuncio Criado com sucesso!!")
+          
     }catch(err){
-      alert("Ocorreu um erro!");
       console.log(err)
     }
 

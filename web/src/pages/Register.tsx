@@ -13,7 +13,7 @@ export const Register = () => {
         const formData = new FormData(e.target as HTMLFormElement);
         const data = Object.fromEntries(formData);
 
-        if(!data.username){
+        if(!data.username || !data.password || !data.email){
             alert("Nao deixe nenhum campo em branco!!")
         }
 

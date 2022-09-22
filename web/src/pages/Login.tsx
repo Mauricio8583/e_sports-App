@@ -17,6 +17,10 @@ export const Login = () => {
 
         const username = data.username;
         const password = data.password
+
+        if(!username || !password){
+            alert("Nao deixe nenhum campo em branco")
+        }
                 
 
         try{
